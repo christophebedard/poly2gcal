@@ -1,6 +1,5 @@
 ## Input data
 
-from datetime import datetime, timedelta
 from classes import TimeStringUtils, SemesterInfo, Timeslot, AltTimeslot, Course, Courses
 
 semester_info = SemesterInfo(firstweek_day='7/Jan/2019',
