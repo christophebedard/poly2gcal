@@ -24,7 +24,7 @@ class SemesterInfo:
         self.lastweek_day: datetime = TimeStringUtils.to_datetime(lastweek_day)
         self.last_day: datetime = TimeStringUtils.to_datetime(last_day)
         self.breakweek_day: datetime = TimeStringUtils.to_datetime(breakweek_day)
-        self.holidays: list = [TimeStringUtils.to_datetime(day) for day in holidays]
+        self.holidays: list = [TimeStringUtils.to_datetime(day).date() for day in holidays]
 
 
 class Timeslot:
