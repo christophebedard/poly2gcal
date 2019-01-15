@@ -62,11 +62,14 @@ phs1102 = Course(name='Champs électromagnétiques',
                               room='C-539.6'))
 
 courses.append(inf3610)
-# courses.append(inf4420a)
-# courses.append(inf8480)
-# courses.append(phs1102)
+courses.append(inf4420a)
+courses.append(inf8480)
+courses.append(phs1102)
 
-if __name__ == '__main__':
-    # tests
+
+def tests():
     print(semester_info.firstweek_day + inf4420a.lectures[0].start)
     print(TimeStringUtils.weekday('Friday'))
+
+if __name__ == '__main__':
+    tests():
