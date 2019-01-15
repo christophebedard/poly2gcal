@@ -72,4 +72,4 @@ def tests():
     print(TimeStringUtils.weekday('Friday'))
 
 if __name__ == '__main__':
-    tests():
+    tests()
