@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
-## courses2gcal - add classes to calendar
+## courses2gcal - add classes to Google Calendar
+## author: Christophe Bedard
 
 import argparse
 from datetime import datetime, timedelta
