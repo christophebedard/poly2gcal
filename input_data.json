@@ -1,0 +1,93 @@
+{
+    "semester_info": {
+        "firstweek_day": "7/Jan/2019",
+        "lastweek_day": "8/Apr/2019",
+        "last_day": "12/Apr/2019",
+        "breakweek_day": "4/Mar/2019",
+        "holidays": []
+    },
+    "courses": [
+        {
+            "name": "Systèmes embarqués",
+            "id": "INF3610",
+            "lectures": [
+                {
+                    "day": "Monday",
+                    "start": "0830",
+                    "duration": "3",
+                    "room": "M-2203"
+                }
+            ],
+            "lab": {
+                "day": "Friday",
+                "start": "0830",
+                "duration": "3",
+                "room": "L-3712",
+                "week": "B1"
+            }
+        },
+        {
+            "name": "Sécurité informatique",
+            "id": "INF4420A",
+            "lectures": [
+                {
+                    "day": "Wednesday",
+                    "start": "1445",
+                    "duration": "3",
+                    "room": "M-1510"
+                }
+            ],
+            "lab": {
+                "day": "Thursday",
+                "start": "1345",
+                "duration": "3",
+                "room": "L-4712",
+                "week": "B1"
+            }
+        },
+        {
+            "name": "Syst répartis et infonuagique",
+            "id": "INF8480",
+            "lectures": [
+                {
+                    "day": "Friday",
+                    "start": "0830",
+                    "duration": "3",
+                    "room": "M-1010"
+                }
+            ],
+            "lab": {
+                "day": "Tuesday",
+                "start": "1545",
+                "duration": "3",
+                "room": "L-4712",
+                "week": "B1"
+            }
+        },
+        {
+            "name": "Champs électromagnétiques",
+            "id": "PHS1102",
+            "lectures": [
+                {
+                    "day": "Monday",
+                    "start": "1130",
+                    "duration": "3",
+                    "room": "B-316.1"
+                },
+                {
+                    "day": "Wednesday",
+                    "start": "1245",
+                    "duration": "2",
+                    "room": "B-316.1"
+                }
+            ],
+            "lab": {
+                "day": "Friday",
+                "start": "1245",
+                "duration": "3",
+                "room": "C-539.6",
+                "week": "*"
+            }
+        }
+    ]
+}
