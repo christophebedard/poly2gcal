@@ -13,7 +13,7 @@ pip3 install --trusted-host pypi.python.org -r requirements.txt
 
 ## Usage
 
-1. add course data to [`input_data.py`](./input_data.py)
+1. add course data to [`input_data.json`](./input_data.json)
 
 2. get Google Calendar API access through [Google API Console](https://console.developers.google.com/) and place your `client_secrets.json` file in this directory (see [here](https://developers.google.com/api-client-library/python/guide/aaa_oauth#acquiring--client-ids-and-secrets) & [here](https://developers.google.com/api-client-library/python/guide/aaa_client_secrets))
 
@@ -30,4 +30,3 @@ pip3 install --trusted-host pypi.python.org -r requirements.txt
 
 * get course info (lecture/lab times) from PolyMTL's website
 * support labs (non-weekly events)
-* use JSON format for input data
