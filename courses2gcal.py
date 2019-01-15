@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-## poly2gcal - add classes to calendar
+## courses2gcal - add classes to calendar
 
 import argparse
 from datetime import datetime, timedelta
