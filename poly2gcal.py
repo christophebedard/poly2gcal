@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-## courses2gcal - add classes to Google Calendar
+## poly2gcal - add PolyMTL classes to Google Calendar
 ## author: Christophe Bedard
 
 import argparse

@@ -1,6 +1,6 @@
-# courses2gcal
+# poly2gcal
 
-Add classes to Google Calendar
+Add PolyMTL classes to Google Calendar
 
 ## Prerequisites
 
@@ -19,11 +19,11 @@ pip3 install --trusted-host pypi.python.org -r requirements.txt
 
 3. run
    ```
-   ./courses2gcal.py
+   ./poly2gcal.py
    ```
    if you only want to see the resulting events without actually adding them to your calendar, use
    ```
-   ./courses2gcal.py -t
+   ./poly2gcal.py -t
    ```
 
 ## TODO
