@@ -19,11 +19,12 @@ class TimeStringUtils:
 
 class SemesterInfo:
 
-    def __init__(self, firstweek_day, lastweek_day, last_day, breakweek_day):
+    def __init__(self, firstweek_day, lastweek_day, last_day, breakweek_day, holidays):
         self.firstweek_day: datetime = TimeStringUtils.to_datetime(firstweek_day)
         self.lastweek_day: datetime = TimeStringUtils.to_datetime(lastweek_day)
         self.last_day: datetime = TimeStringUtils.to_datetime(last_day)
         self.breakweek_day: datetime = TimeStringUtils.to_datetime(breakweek_day)
+        self.holidays: list = [TimeStringUtils.to_datetime(day) for day in holidays]
 
 
 class Timeslot:

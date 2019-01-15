@@ -5,7 +5,8 @@ from classes import TimeStringUtils, SemesterInfo, Timeslot, AltTimeslot, Course
 semester_info = SemesterInfo(firstweek_day='7/Jan/2019',
                              lastweek_day='29/Apr/2019',
                              last_day='4/May/2019',
-                             breakweek_day='4/Mar/2019')
+                             breakweek_day='4/Mar/2019',
+                             holidays=[])
 
 courses = []
 
