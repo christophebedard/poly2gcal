@@ -6,20 +6,19 @@ import sys
 from apiclient.discovery import build
 from oauth2client import tools
 from oauth2client.file import Storage
-from oauth2client.client import OAuth2WebServerFlow
+from oauth2client.client import flow_from_clientsecrets
 
 
-scope = 'https://www.googleapis.com/auth/calendar'
-
+SCOPE = 'https://www.googleapis.com/auth/calendar'
+SECRETS_PATH = 'client_secrets.json'
 TIMEZONE = 'America/Toronto'
 
-
-def login(client_id, client_secret):
+def login():
     storage = Storage('credentials.dat')
     credentials = storage.get()
 
     if credentials is None or credentials.invalid:
-        flow = OAuth2WebServerFlow(client_id, client_secret, scope)
+        flow = flow_from_clientsecrets(SECRETS_PATH, SCOPE)
         credentials = tools.run_flow(flow, storage, tools.argparser.parse_args())
     
     http = httplib2.Http()

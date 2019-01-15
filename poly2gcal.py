@@ -11,11 +11,6 @@ from gcal import login, create_calendar_body, create_event_body
 from input_data import *
 
 
-# get these from the Google API Console: https://console.developers.google.com/
-client_id = ''
-client_secret = ''
-
-
 # parse
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('-t',
@@ -61,7 +56,7 @@ def create_calendars(service, courses):
     return calendar_ids
 
 def main():
-    service = login(client_id, client_secret) if not test else None
+    service = login() if not test else None
 
     try:
         calendar_ids = create_calendars(service, courses)
