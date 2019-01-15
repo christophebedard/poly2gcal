@@ -2,6 +2,7 @@
 
 ## poly2gcal - add classes to calendar
 
+import argparse
 from datetime import datetime, timedelta
 from oauth2client.client import AccessTokenRefreshError
 
@@ -14,6 +15,17 @@ client_id = ''
 client_secret = ''
 
 
+# parse
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('-t',
+                    dest='test',
+                    action='store_const',
+                    const=True,
+                    default=False,
+                    help='test: do not actually add to calendar, only preview requests')
+args = parser.parse_args()
+test = args.test
+
 def insert_lectures(week_day, course, service, semester_info, calendar_ids):
     for lecture in course.lectures:
         start = week_day + lecture.start
@@ -21,8 +33,9 @@ def insert_lectures(week_day, course, service, semester_info, calendar_ids):
             end = start + lecture.duration
             event_name = 'Cours - ' + course.name
             event = create_event_body(event_name, lecture.room, start, end)
-            # response_event = service.events().insert(calendarId=calendar_ids[course.name], body=event).execute()
             print('INSERT:\n' + repr(event))
+            if not test:
+                response_event = service.events().insert(calendarId=calendar_ids[course.name], body=event).execute()
 
 def process_week(week_day, service, semester_info, courses, calendar_ids):
     for course in courses:
@@ -40,18 +53,18 @@ def create_calendars(service, courses):
     calendar_ids = {}
     for course in courses:
         calendar = create_calendar_body(course.name)
-        response_cal = service.calendars().insert(body=calendar).execute()
-        calendar_ids[course.name] = response_cal['id']
+        print('CREATE:\n' + repr(calendar))
+        if not test:
+            response_cal = service.calendars().insert(body=calendar).execute()
+            calendar_ids[course.name] = response_cal['id']
     return calendar_ids
 
 def main():
-    # service = login(client_id, client_secret)
-    service = None
+    service = login(client_id, client_secret) if not test else None
 
     try:
-        # calendar_ids = create_calendars(service, courses)
-        # process_semester(service, semester_info, courses, calendar_ids)
-        process_semester(service, semester_info, courses, {})
+        calendar_ids = create_calendars(service, courses)
+        process_semester(service, semester_info, courses, calendar_ids)
     
     except AccessTokenRefreshError:
         print('The credentials have been revoked or expired, please re-run the application to re-authorize')
