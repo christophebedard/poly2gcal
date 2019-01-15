@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from oauth2client.client import AccessTokenRefreshError
 
 from gcal import login, create_calendar_body, create_event_body
-from data import *
+from input_data import *
 
 
 # get these from the Google API Console: https://console.developers.google.com/
