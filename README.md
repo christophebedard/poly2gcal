@@ -24,4 +24,5 @@ pip3 install --trusted-host pypi.python.org -r requirements.txt
 
 ## TODO
 
+* support labs (non-weekly events)
 * use JSON format for input data
