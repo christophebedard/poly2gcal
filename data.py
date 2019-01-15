@@ -66,6 +66,7 @@ courses.append(inf4420a)
 courses.append(inf8480)
 courses.append(phs1102)
 
-# tests
-print(semester_info.firstweek_day + inf4420a.lectures[0].start)
-print(TimeStringUtils.weekday('Friday'))
+if __name__ == '__main__':
+    # tests
+    print(semester_info.firstweek_day + inf4420a.lectures[0].start)
+    print(TimeStringUtils.weekday('Friday'))
