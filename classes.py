@@ -58,12 +58,3 @@ class Course:
         self.cid: str = cid
         self.lectures: list = lectures
         self.lab: AltTimeslot | Timeslot  = lab
-
-
-class Courses:
-
-    def __init__(self):
-        self.courses: list = []
-    
-    def add(self, course):
-        self.courses.append(course)

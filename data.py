@@ -1,13 +1,13 @@
 ## Input data
 
-from classes import TimeStringUtils, SemesterInfo, Timeslot, AltTimeslot, Course, Courses
+from classes import TimeStringUtils, SemesterInfo, Timeslot, AltTimeslot, Course
 
 semester_info = SemesterInfo(firstweek_day='7/Jan/2019',
                              lastweek_day='29/Apr/2019',
                              last_day='4/May/2019',
                              breakweek_day='4/Mar/2019')
 
-courses = Courses()
+courses = []
 
 inf3610 = Course(name='Systemes embarques',
                  cid='INF3610',
@@ -45,18 +45,6 @@ inf8480 = Course(name='Syst repartis et infonuagique',
                                  room='L-4712',
                                  week='B1'))
 
-inf8770 = Course(name='Technologies multimedias',
-                 cid='INF8770',
-                 lectures=[Timeslot(day='Monday',
-                                    start='0830',
-                                    duration=3,
-                                    room='M-1420')],
-                 lab=AltTimeslot(day='Thursday',
-                                 start='1445',
-                                 duration=3,
-                                 room='L-3712',
-                                 week='B2'))
-
 phs1102 = Course(name='Champs electromagnetiques',
                  cid='PHS1102',
                  lectures=[Timeslot(day='Monday',
@@ -72,11 +60,10 @@ phs1102 = Course(name='Champs electromagnetiques',
                               duration=3,
                               room='C-539.6'))
 
-courses.add(inf3610)
-courses.add(inf4420a)
-courses.add(inf8480)
-courses.add(inf8770)
-courses.add(phs1102)
+courses.append(inf3610)
+courses.append(inf4420a)
+courses.append(inf8480)
+courses.append(phs1102)
 
 # tests
 print(semester_info.firstweek_day + inf4420a.lectures[0].start)
