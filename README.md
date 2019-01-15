@@ -19,7 +19,11 @@ pip3 install --trusted-host pypi.python.org -r requirements.txt
 
 3. run
    ```
-   python3 poly2gcal.py
+   ./poly2gcal.py
+   ```
+   if you only want to see the resulting events without actually adding them to your calendar, use
+   ```
+   ./poly2gcal.py -t
    ```
 
 ## TODO

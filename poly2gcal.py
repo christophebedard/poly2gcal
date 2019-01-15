@@ -22,7 +22,7 @@ parser.add_argument('-t',
                     action='store_const',
                     const=True,
                     default=False,
-                    help='test: do not actually add to calendar, only preview requests')
+                    help='test: only preview requests & do not actually add to calendar')
 args = parser.parse_args()
 test = args.test
 
