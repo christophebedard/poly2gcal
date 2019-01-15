@@ -3,14 +3,14 @@
 from classes import TimeStringUtils, SemesterInfo, Timeslot, AltTimeslot, Course
 
 semester_info = SemesterInfo(firstweek_day='7/Jan/2019',
-                             lastweek_day='29/Apr/2019',
-                             last_day='4/May/2019',
+                             lastweek_day='8/Apr/2019',
+                             last_day='12/Apr/2019',
                              breakweek_day='4/Mar/2019',
                              holidays=[])
 
 courses = []
 
-inf3610 = Course(name='Systemes embarques',
+inf3610 = Course(name='Systèmes embarqués',
                  cid='INF3610',
                  lectures=[Timeslot(day='Monday',
                                     start='0830',
@@ -22,7 +22,7 @@ inf3610 = Course(name='Systemes embarques',
                                  room='L-3712',
                                  week='B1'))
 
-inf4420a = Course(name='Securite informatique',
+inf4420a = Course(name='Sécurité informatique',
                   cid='INF4420A',
                   lectures=[Timeslot(day='Wednesday',
                                      start='1445',
@@ -34,7 +34,7 @@ inf4420a = Course(name='Securite informatique',
                                   room='L-4712',
                                   week='B1'))
 
-inf8480 = Course(name='Syst repartis et infonuagique',
+inf8480 = Course(name='Syst répartis et infonuagique',
                  cid='INF8480',
                  lectures=[Timeslot(day='Friday',
                                     start='0830',
@@ -46,7 +46,7 @@ inf8480 = Course(name='Syst repartis et infonuagique',
                                  room='L-4712',
                                  week='B1'))
 
-phs1102 = Course(name='Champs electromagnetiques',
+phs1102 = Course(name='Champs électromagnétiques',
                  cid='PHS1102',
                  lectures=[Timeslot(day='Monday',
                                     start='1130',
