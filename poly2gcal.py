@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from oauth2client.client import AccessTokenRefreshError
 
 from gcal import login, create_calendar_body, create_event_body
+from time_tools import date_to_datetime
 from conversion_tools import convert_semester_info, convert_courses
 
 # parse
@@ -22,14 +23,28 @@ parser.add_argument('-t',
 args = parser.parse_args()
 test = args.test
 
+def is_in_semester(date_time, semester_info):
+    return semester_info['first_day'] <= date_time.date() <= semester_info['last_day']
 
-def insert_lectures(week_day, course, service, semester_info, calendar_ids):
-    course_name = course['name']
-    for lecture in course['lectures']:
-        start = week_day + lecture['start']
-        is_holiday = start.date() in semester_info['holidays']
-        is_in_semester = semester_info['first_day'].date() <= start.date() <= semester_info['last_day'].date()
-        if is_in_semester and not is_holiday:
+def is_holiday(date, semester_info):
+    return date.date() in semester_info['holidays']
+
+def insert_lab(week_day, week_alt_lab, course_name, lab, service, semester_info, calendar_ids):
+    start = date_to_datetime(week_day) + lab['start']
+    if is_in_semester(start, semester_info) and not is_holiday(start, semester_info):
+        alt_week = lab['week']
+        if alt_week is None or alt_week == week_alt_lab:
+            end = start + lab['duration']
+            event_name = 'Lab - ' + course_name
+            event = create_event_body(event_name, lab['room'], start, end)
+            print('INSERT:\n' + repr(event))
+            if not test:
+                response_event = service.events().insert(calendarId=calendar_ids[course_name], body=event).execute()
+
+def insert_lectures(week_day, course_name, lectures, service, semester_info, calendar_ids):
+    for lecture in lectures:
+        start = date_to_datetime(week_day) + lecture['start']
+        if is_in_semester(start, semester_info) and not is_holiday(start, semester_info):
             end = start + lecture['duration']
             event_name = 'Cours - ' + course_name
             event = create_event_body(event_name, lecture['room'], start, end)
@@ -37,16 +52,20 @@ def insert_lectures(week_day, course, service, semester_info, calendar_ids):
             if not test:
                 response_event = service.events().insert(calendarId=calendar_ids[course_name], body=event).execute()
 
-def process_week(week_day, service, semester_info, courses, calendar_ids):
+def process_week(week_day, week_alt_lab, service, semester_info, courses, calendar_ids):
     for course in courses:
-        insert_lectures(week_day, course, service, semester_info, calendar_ids)
+        course_name = course['name']
+        insert_lectures(week_day, course_name, course['lectures'], service, semester_info, calendar_ids)
+        insert_lab(week_day, week_alt_lab, course_name, course['lab'], service, semester_info, calendar_ids)
 
 def process_semester(service, semester_info, courses, calendar_ids):
     # week by week
     week_day = semester_info['firstweek_day']
+    week_alt_lab = 'B1'
     while week_day <= semester_info['lastweek_day']:
         if week_day != semester_info['breakweek_day']:
-            process_week(week_day, service, semester_info, courses, calendar_ids)
+            process_week(week_day, week_alt_lab, service, semester_info, courses, calendar_ids)
+            week_alt_lab = 'B2' if week_alt_lab == 'B1' else 'B1'
         week_day += timedelta(weeks=1)
 
 def create_calendars(service, courses):
