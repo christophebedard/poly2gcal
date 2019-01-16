@@ -26,7 +26,7 @@ def main():
 
         print('Week of {} {} to{} {}:'.format(begin_month,
                                               first_day.day,
-                                              ' {}'.format(end_month) if begin_month != end_month else '',
+                                              ' ' + end_month if begin_month != end_month else '',
                                               last_day.day))
 
         first_day += timedelta(weeks=1)
