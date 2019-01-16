@@ -1,8 +1,9 @@
 {
     "semester_info": {
         "firstweek_day": "7/Jan/2019",
+        "first_day": "",
         "lastweek_day": "8/Apr/2019",
-        "last_day": "12/Apr/2019",
+        "last_day": "",
         "breakweek_day": "4/Mar/2019",
         "holidays": []
     },

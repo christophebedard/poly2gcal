@@ -22,11 +22,14 @@ parser.add_argument('-t',
 args = parser.parse_args()
 test = args.test
 
+
 def insert_lectures(week_day, course, service, semester_info, calendar_ids):
     course_name = course['name']
     for lecture in course['lectures']:
         start = week_day + lecture['start']
-        if start.date() not in semester_info['holidays']:
+        is_holiday = start.date() in semester_info['holidays']
+        is_in_semester = semester_info['first_day'].date() <= start.date() <= semester_info['last_day'].date()
+        if is_in_semester and not is_holiday:
             end = start + lecture['duration']
             event_name = 'Cours - ' + course_name
             event = create_event_body(event_name, lecture['room'], start, end)
