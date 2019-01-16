@@ -25,7 +25,7 @@ def convert_courses(courses_json):
         lab['start'] = timedelta_from_day_and_time(lab_json['day'], lab_json['start'])
         lab['duration'] = timedelta_from_class_duration(int(lab_json['duration']))
         lab['room'] = lab_json['room']
-        lab['week'] = None if ('week' not in lab_json or not lab_json['week']) else lab_json['week']
+        lab['week'] = '' if 'week' not in lab_json else lab_json['week']
         course['lab'] = lab
 
         courses.append(course)
@@ -38,3 +38,4 @@ def convert_semester_info(semester_info):
     semester_info['last_day'] = (semester_info['lastweek_day'] + timedelta(days=4)) if ('last_day' not in semester_info or not semester_info['last_day']) else to_date(semester_info['last_day'])
     semester_info['breakweek_day'] = to_date(semester_info['breakweek_day'])
     semester_info['holidays'] = [to_date(day) for day in semester_info['holidays']] if 'holidays' in semester_info else []
+    semester_info['alt_exceptions'] = [to_date(day) for day in semester_info['alt_exceptions']] if 'alt_exceptions' in semester_info else []

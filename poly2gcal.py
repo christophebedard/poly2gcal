@@ -29,11 +29,18 @@ def is_in_semester(date_time, semester_info):
 def is_holiday(date, semester_info):
     return date.date() in semester_info['holidays']
 
+def is_alt_week_exception(date_time, semester_info):
+    return date_time.date() in semester_info['alt_exceptions']
+
 def insert_lab(week_day, week_alt_lab, course_name, lab, service, semester_info, calendar_ids):
     start = date_to_datetime(week_day) + lab['start']
     if is_in_semester(start, semester_info) and not is_holiday(start, semester_info):
-        alt_week = lab['week']
-        if alt_week is None or alt_week == week_alt_lab:
+        lab_alt_week = lab['week']
+        current_week_alt = week_alt_lab
+        if lab_alt_week and is_alt_week_exception(start, semester_info):
+            current_week_alt = flip_alt_week(current_week_alt)
+        # if the lab is weekly anyway or if this is the corresponding alt week
+        if not lab_alt_week or lab_alt_week == current_week_alt:
             end = start + lab['duration']
             event_name = 'Lab - ' + course_name
             event = create_event_body(event_name, lab['room'], start, end)
@@ -58,6 +65,9 @@ def process_week(week_day, week_alt_lab, service, semester_info, courses, calend
         insert_lectures(week_day, course_name, course['lectures'], service, semester_info, calendar_ids)
         insert_lab(week_day, week_alt_lab, course_name, course['lab'], service, semester_info, calendar_ids)
 
+def flip_alt_week(alt_week):
+    return 'B2' if alt_week == 'B1' else 'B1'
+
 def process_semester(service, semester_info, courses, calendar_ids):
     # week by week
     week_day = semester_info['firstweek_day']
@@ -65,7 +75,7 @@ def process_semester(service, semester_info, courses, calendar_ids):
     while week_day <= semester_info['lastweek_day']:
         if week_day != semester_info['breakweek_day']:
             process_week(week_day, week_alt_lab, service, semester_info, courses, calendar_ids)
-            week_alt_lab = 'B2' if week_alt_lab == 'B1' else 'B1'
+            week_alt_lab = flip_alt_week(week_alt_lab)
         week_day += timedelta(weeks=1)
 
 def create_calendars(service, courses):
