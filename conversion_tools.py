@@ -5,6 +5,9 @@ from time_tools import to_date, timedelta_from_day_and_time, timedelta_from_clas
 
 
 def convert_courses(courses_json):
+    """
+    Convert input data for courses from JSON to objects when necessary
+    """
     courses = []
     for course_json in courses_json:
         course = {}
@@ -32,6 +35,9 @@ def convert_courses(courses_json):
     return courses
 
 def convert_semester_info(semester_info):
+    """
+    Convert input data for semester info from JSON to objects when necessary
+    """
     semester_info['firstweek_day'] = to_date(semester_info['firstweek_day'])
     semester_info['first_day'] = semester_info['firstweek_day'] if ('first_day' not in semester_info or not semester_info['first_day']) else to_date(semester_info['first_day'])
     semester_info['lastweek_day'] = to_date(semester_info['lastweek_day'])

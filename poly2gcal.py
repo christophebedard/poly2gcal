@@ -24,24 +24,50 @@ args = parser.parse_args()
 test = args.test
 
 def is_in_semester(date_time, semester_info):
+    """
+    Check if a datetime is within the first and last days of the semester
+    """
     return semester_info['first_day'] <= date_time.date() <= semester_info['last_day']
 
 def is_holiday(date, semester_info):
+    """
+    Check if a date is a holiday
+    """
     return date.date() in semester_info['holidays']
 
 def is_alt_week_exception(date_time, semester_info):
+    """
+    Check if a datetime corresponds to an exception to the usual week alternation rule
+    (i.e. Monday might be B1 while the rest of the week is B2)
+    """
     return date_time.date() in semester_info['alt_exceptions']
 
 def insert_event(service, calendar_id, body):
+    """
+    Display and insert an event (but only if the test flag is not enabled)
+    """
     print('EVENT:\n' + repr(body))
     if not test:
         response_event = service.events().insert(calendarId=calendar_id, body=body).execute()
 
-def insert_lab(week_day, week_alt_lab, course_name, lab, service, semester_info, calendar_ids):
+def insert_calendar(service, body, calendar_ids):
+    """
+    Display and insert a calendar (but only if the test flag is not enabled)
+    """
+    print('CALENDAR:\n' + repr(body))
+    if not test:
+        response_cal = service.calendars().insert(body=body).execute()
+        calendar_ids[body['summary']] = response_cal['id']
+
+def check_lab(week_day, week_alt_lab, course_name, lab, service, semester_info, calendar_ids):
+    """
+    Check if there is a lab in a given week and insert if there is
+    """
     start = date_to_datetime(week_day) + lab['start']
     if is_in_semester(start, semester_info) and not is_holiday(start, semester_info):
         lab_alt_week = lab['week']
         current_week_alt = week_alt_lab
+        # if this day is an exception, flip the current week
         if lab_alt_week and is_alt_week_exception(start, semester_info):
             current_week_alt = flip_alt_week(current_week_alt)
         # if the lab is weekly anyway or if this is the corresponding alt week
@@ -52,6 +78,9 @@ def insert_lab(week_day, week_alt_lab, course_name, lab, service, semester_info,
             insert_event(service, calendar_ids[course_name], event)
 
 def insert_lectures(week_day, course_name, lectures, service, semester_info, calendar_ids):
+    """
+    Insert lectures for a course for a given week
+    """
     for lecture in lectures:
         start = date_to_datetime(week_day) + lecture['start']
         if is_in_semester(start, semester_info) and not is_holiday(start, semester_info):
@@ -61,15 +90,24 @@ def insert_lectures(week_day, course_name, lectures, service, semester_info, cal
             insert_event(service, calendar_ids[course_name], event)
 
 def process_week(week_day, week_alt_lab, service, semester_info, courses, calendar_ids):
+    """
+    Process all courses (lectures and labs) for a given week
+    """
     for course in courses:
         course_name = course['name']
-        insert_lectures(week_day, course_name, course['lectures'], service, semester_info, calendar_ids)
-        insert_lab(week_day, week_alt_lab, course_name, course['lab'], service, semester_info, calendar_ids)
+        # insert_lectures(week_day, course_name, course['lectures'], service, semester_info, calendar_ids)
+        check_lab(week_day, week_alt_lab, course_name, course['lab'], service, semester_info, calendar_ids)
 
 def flip_alt_week(alt_week):
+    """
+    Flip an alternate week value
+    """
     return 'B2' if alt_week == 'B1' else 'B1'
 
 def process_semester(service, semester_info, courses, calendar_ids):
+    """
+    Process the whole semester, adding lectures and labs
+    """
     # week by week
     week_day = semester_info['firstweek_day']
     week_alt_lab = 'B1'
@@ -80,17 +118,20 @@ def process_semester(service, semester_info, courses, calendar_ids):
         week_day += timedelta(weeks=1)
 
 def create_calendars(service, courses):
+    """
+    Create a calendar for each course
+    """
     calendar_ids = {}
     for course in courses:
         course_name = course['name']
         calendar = create_calendar_body(course_name)
-        print('CREATE:\n' + repr(calendar))
-        if not test:
-            response_cal = service.calendars().insert(body=calendar).execute()
-            calendar_ids[course_name] = response_cal['id']
+        insert_calendar(service, calendar, calendar_ids)
     return calendar_ids
 
 def main():
+    """
+    Main logic: get API service and process input data
+    """
     service = login() if not test else None
 
     with open('input_data.json') as f:
