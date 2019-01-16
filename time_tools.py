@@ -1,14 +1,15 @@
 ## Tools for time conversion/processing
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 
 WEEKDAYS_INT = { weekday: i for i, weekday in enumerate(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']) }
 
-def to_datetime(time_str):
-    return datetime.strptime(time_str, '%d/%b/%Y')
 
 def to_date(time_str):
-    return to_datetime(time_str).date()
+    return datetime.strptime(time_str, '%d/%b/%Y').date()
+
+def date_to_datetime(date):
+    return datetime.combine(date, time())
 
 def weekday_int(weekday_str):
     return WEEKDAYS_INT[weekday_str]
@@ -23,5 +24,5 @@ def timedelta_from_class_duration(duration):
     minutes = total_minutes % 60
     return timedelta(hours=hours, minutes=minutes)
 
-def month_from_datetime(date):
+def month_from_date(date):
     return date.strftime('%B')

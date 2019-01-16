@@ -6,7 +6,7 @@
 
 import json
 from datetime import datetime, timedelta
-from time_tools import month_from_datetime
+from time_tools import month_from_date
 from conversion_tools import convert_semester_info, convert_courses
 
 
@@ -21,8 +21,8 @@ def main():
     while first_day <= semester_info['lastweek_day']:
         last_day = first_day + timedelta(days=6)
         
-        begin_month = month_from_datetime(first_day)
-        end_month = month_from_datetime(last_day)
+        begin_month = month_from_date(first_day)
+        end_month = month_from_date(last_day)
 
         print('Week of {} {} to{} {}:'.format(begin_month,
                                               first_day.day,
