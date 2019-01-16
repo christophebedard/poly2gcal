@@ -84,14 +84,12 @@ def convert_courses(courses_json):
         courses.append(course)
     return courses
 
-def convert_semester_info(semester_info_json):
-    semester_info = {}
-    semester_info['firstweek_day'] = to_datetime(semester_info_json['firstweek_day'])
-    semester_info['lastweek_day'] = to_datetime(semester_info_json['lastweek_day'])
-    semester_info['last_day'] = to_datetime(semester_info_json['last_day'])
-    semester_info['breakweek_day'] = to_datetime(semester_info_json['breakweek_day'])
-    semester_info['holidays'] = [to_date(day) for day in semester_info_json['holidays']]
-    return semester_info
+def convert_semester_info(semester_info):
+    semester_info['firstweek_day'] = to_datetime(semester_info['firstweek_day'])
+    semester_info['lastweek_day'] = to_datetime(semester_info['lastweek_day'])
+    semester_info['last_day'] = to_datetime(semester_info['last_day'])
+    semester_info['breakweek_day'] = to_datetime(semester_info['breakweek_day'])
+    semester_info['holidays'] = [to_date(day) for day in semester_info['holidays']]
 
 def main():
     service = login() if not test else None
@@ -99,7 +97,8 @@ def main():
     with open('input_data.json') as f:
         data = json.load(f)
 
-    semester_info = convert_semester_info(data['semester_info'])
+    semester_info = data['semester_info']
+    convert_semester_info(semester_info)
     courses = convert_courses(data['courses'])
 
     try:
