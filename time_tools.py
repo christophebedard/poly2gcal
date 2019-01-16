@@ -4,10 +4,7 @@ from datetime import datetime, timedelta
 
 
 TIME_FORMAT = '%d/%b/%Y'
-WEEKDAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
-WEEKDAYS_INT = {}
-for i, weekday in enumerate(WEEKDAYS):
-    WEEKDAYS_INT[weekday] = i
+WEEKDAYS_INT = { weekday: i for i, weekday in enumerate(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']) }
 
 def to_datetime(time_str):
     return datetime.strptime(time_str, TIME_FORMAT)
