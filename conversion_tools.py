@@ -37,4 +37,4 @@ def convert_semester_info(semester_info):
     semester_info['lastweek_day'] = to_date(semester_info['lastweek_day'])
     semester_info['last_day'] = (semester_info['lastweek_day'] + timedelta(days=4)) if ('last_day' not in semester_info or not semester_info['last_day']) else to_date(semester_info['last_day'])
     semester_info['breakweek_day'] = to_date(semester_info['breakweek_day'])
-    semester_info['holidays'] = [to_date(day) for day in semester_info['holidays']]
+    semester_info['holidays'] = [to_date(day) for day in semester_info['holidays']] if 'holidays' in semester_info else []
