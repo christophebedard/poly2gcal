@@ -32,6 +32,11 @@ def is_holiday(date, semester_info):
 def is_alt_week_exception(date_time, semester_info):
     return date_time.date() in semester_info['alt_exceptions']
 
+def insert_event(service, calendar_id, body):
+    print('EVENT:\n' + repr(body))
+    if not test:
+        response_event = service.events().insert(calendarId=calendar_id, body=body).execute()
+
 def insert_lab(week_day, week_alt_lab, course_name, lab, service, semester_info, calendar_ids):
     start = date_to_datetime(week_day) + lab['start']
     if is_in_semester(start, semester_info) and not is_holiday(start, semester_info):
@@ -44,9 +49,7 @@ def insert_lab(week_day, week_alt_lab, course_name, lab, service, semester_info,
             end = start + lab['duration']
             event_name = 'Lab - ' + course_name
             event = create_event_body(event_name, lab['room'], start, end)
-            print('INSERT:\n' + repr(event))
-            if not test:
-                response_event = service.events().insert(calendarId=calendar_ids[course_name], body=event).execute()
+            insert_event(service, calendar_ids[course_name], event)
 
 def insert_lectures(week_day, course_name, lectures, service, semester_info, calendar_ids):
     for lecture in lectures:
@@ -55,9 +58,7 @@ def insert_lectures(week_day, course_name, lectures, service, semester_info, cal
             end = start + lecture['duration']
             event_name = 'Cours - ' + course_name
             event = create_event_body(event_name, lecture['room'], start, end)
-            print('INSERT:\n' + repr(event))
-            if not test:
-                response_event = service.events().insert(calendarId=calendar_ids[course_name], body=event).execute()
+            insert_event(service, calendar_ids[course_name], event)
 
 def process_week(week_day, week_alt_lab, service, semester_info, courses, calendar_ids):
     for course in courses:
