@@ -4,40 +4,32 @@
 # Used for grouping checklist items
 # example: "Week of January 7 to 13:"
 
+import json
 from datetime import datetime, timedelta
+from time_tools import month_from_datetime
+from conversion_tools import convert_semester_info, convert_courses
 
-# Constants
-TIME_FORMAT = '%d/%b/%Y'
-MONTH_FORMAT = '%B'
-DT_WEEK = timedelta(weeks=1)
-DT_WEEK_EXCLUSIVE = timedelta(days=6)
 
-# Parameters
-# Note: assuming that a week starts on a Monday
-# first day of the first week
-firstweek_day = datetime.strptime('7/Jan/2019', TIME_FORMAT)
-# first day of the last week
-lastweek_day = datetime.strptime('29/Apr/2019', TIME_FORMAT)
-# actual last day of the last week
-last_day = datetime.strptime('4/May/2019', TIME_FORMAT)
+def main():
+    with open('input_data.json') as f:
+        data = json.load(f)
 
-i = firstweek_day
-while i <= lastweek_day:
-    # If last week, force last day
-    if (i == lastweek_day):
-        i_end = last_day
-    else:
-        i_end = i + DT_WEEK_EXCLUSIVE
-    
-    begin_day = str(i.day)
-    begin_month = i.strftime(MONTH_FORMAT)
-    end_day = str(i_end.day)
-    end_month = i_end.strftime(MONTH_FORMAT)
+    semester_info = data['semester_info']
+    convert_semester_info(semester_info)
 
-    # Check if months are the same or not
-    if (begin_month == end_month):
-        print('Week of ' + begin_month + ' ' + begin_day + ' to ' + end_day + ':')
-    else:
-        print('Week of ' + begin_month + ' ' + begin_day + ' to ' + end_month + ' ' + end_day + ':')
+    first_day = semester_info['firstweek_day']
+    while first_day <= semester_info['lastweek_day']:
+        last_day = first_day + timedelta(days=6)
+        
+        begin_month = month_from_datetime(first_day)
+        end_month = month_from_datetime(last_day)
 
-    i = i + DT_WEEK
+        print('Week of {} {} to{} {}:'.format(begin_month,
+                                              str(first_day.day),
+                                              ' {}'.format(end_month) if begin_month != end_month else '',
+                                              str(last_day.day)))
+
+        first_day += timedelta(weeks=1)
+
+if __name__ == '__main__':
+    main()
