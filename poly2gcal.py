@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 from oauth2client.client import AccessTokenRefreshError
 
 from gcal import login, create_calendar_body, create_event_body
-from time_tools import to_datetime, to_date, timedelta_from_day_and_time, timedelta_from_class_duration
+from conversion_tools import convert_semester_info, convert_courses
 
 # parse
 parser = argparse.ArgumentParser(description=__doc__)
@@ -56,40 +56,6 @@ def create_calendars(service, courses):
             response_cal = service.calendars().insert(body=calendar).execute()
             calendar_ids[course_name] = response_cal['id']
     return calendar_ids
-
-def convert_courses(courses_json):
-    courses = []
-    for course_json in courses_json:
-        course = {}
-        course['name'] = course_json['name']
-        course['id'] = course_json['id']
-
-        lectures = []
-        for lecture_json in course_json['lectures']:
-            lecture = {}
-            lecture['start'] = timedelta_from_day_and_time(lecture_json['day'], lecture_json['start'])
-            lecture['duration'] = timedelta_from_class_duration(int(lecture_json['duration']))
-            lecture['room'] = lecture_json['room']
-            lectures.append(lecture)
-        course['lectures'] = lectures
-
-        lab_json = course_json['lab']
-        lab = {}
-        lab['start'] = timedelta_from_day_and_time(lab_json['day'], lab_json['start'])
-        lab['duration'] = timedelta_from_class_duration(int(lab_json['duration']))
-        lab['room'] = lab_json['room']
-        lab['week'] = lab_json['week']
-        course['lab'] = lab
-
-        courses.append(course)
-    return courses
-
-def convert_semester_info(semester_info):
-    semester_info['firstweek_day'] = to_datetime(semester_info['firstweek_day'])
-    semester_info['lastweek_day'] = to_datetime(semester_info['lastweek_day'])
-    semester_info['last_day'] = to_datetime(semester_info['last_day'])
-    semester_info['breakweek_day'] = to_datetime(semester_info['breakweek_day'])
-    semester_info['holidays'] = [to_date(day) for day in semester_info['holidays']]
 
 def main():
     service = login() if not test else None
