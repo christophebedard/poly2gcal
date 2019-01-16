@@ -29,4 +29,3 @@ pip3 install --trusted-host pypi.python.org -r requirements.txt
 ## TODO
 
 * get course info (lecture/lab times) from PolyMTL's website
-* support labs (non-weekly events)
