@@ -9,10 +9,11 @@ from datetime import datetime, timedelta
 from time_tools import month_from_date
 from conversion_tools import convert_semester_info, convert_courses
 
-def get_interval(date_begin, date_end):
+def get_interval(date_begin):
     """
-    Format an interval (begin and end dates) to string 
+    Format an interval (starting at the begin date) to string 
     """
+    date_end = date_begin + timedelta(days=6)
     begin_month = month_from_date(date_begin)
     end_month = month_from_date(date_end)
     return 'Week of {} {} to{} {}:'.format(begin_month,
@@ -29,8 +30,7 @@ def main():
 
     first_day = semester_info['firstweek_day']
     while first_day <= semester_info['lastweek_day']:
-        last_day = first_day + timedelta(days=6)
-        print(get_interval(first_day, last_day))
+        print(get_interval(first_day))
         first_day += timedelta(weeks=1)
 
 if __name__ == '__main__':

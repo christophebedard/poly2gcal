@@ -11,6 +11,7 @@ from oauth2client.client import AccessTokenRefreshError
 from gcal import login, create_calendar_body, create_event_body
 from time_tools import date_to_datetime
 from conversion_tools import convert_semester_info, convert_courses
+from weekdates_intervals import get_interval
 
 # parse
 parser = argparse.ArgumentParser(description=__doc__)
@@ -20,8 +21,15 @@ parser.add_argument('-t',
                     const=True,
                     default=False,
                     help='test: only preview requests & do not actually add to calendar')
+parser.add_argument('-c',
+                    dest='checklist',
+                    action='store_const',
+                    const=True,
+                    default=False,
+                    help='generate checklist of labs to hand in, separated by weeks')
 args = parser.parse_args()
 test = args.test
+checklist = args.checklist
 
 def is_in_semester(date_time, semester_info):
     """
@@ -44,7 +52,7 @@ def is_alt_week_exception(date_time, semester_info):
 
 def insert_event(service, course_name, calendar_ids, body):
     """
-    Display and insert an event (but only if the test flag is not enabled)
+    Insert an event (but only if the test flag is not enabled)
     """
     print('EVENT:\n' + repr(body))
     if not test:
@@ -52,7 +60,7 @@ def insert_event(service, course_name, calendar_ids, body):
 
 def insert_calendar(service, body, course_name, calendar_ids):
     """
-    Display and insert a calendar (but only if the test flag is not enabled)
+    Insert a calendar (but only if the test flag is not enabled)
     """
     print('CALENDAR:\n' + repr(body))
     if not test:
@@ -72,10 +80,13 @@ def check_lab(week_day, week_alt_lab, course_name, lab, service, semester_info, 
             current_week_alt = flip_alt_week(current_week_alt)
         # if the lab is weekly anyway or if this is the corresponding alt week
         if not lab_alt_week or lab_alt_week == current_week_alt:
-            end = start + lab['duration']
-            event_name = 'Lab - ' + course_name
-            event = create_event_body(event_name, lab['room'], start, end)
-            insert_event(service, course_name, calendar_ids, event)
+            if not checklist:
+                end = start + lab['duration']
+                event_name = 'Lab - ' + course_name
+                event = create_event_body(event_name, lab['room'], start, end)
+                insert_event(service, course_name, calendar_ids, event)
+            else:
+                print('Lab {} done'.format(course_name))
 
 def insert_lectures(week_day, course_name, lectures, service, semester_info, calendar_ids):
     """
@@ -95,8 +106,9 @@ def process_week(week_day, week_alt_lab, service, semester_info, courses, calend
     """
     for course in courses:
         course_name = course['name']
-        insert_lectures(week_day, course_name, course['lectures'], service, semester_info, calendar_ids)
         check_lab(week_day, week_alt_lab, course_name, course['lab'], service, semester_info, calendar_ids)
+        if not checklist:
+            insert_lectures(week_day, course_name, course['lectures'], service, semester_info, calendar_ids)
 
 def flip_alt_week(alt_week):
     """
@@ -112,6 +124,8 @@ def process_semester(service, semester_info, courses, calendar_ids):
     week_day = semester_info['firstweek_day']
     week_alt_lab = 'B1'
     while week_day <= semester_info['lastweek_day']:
+        if checklist:
+            print(get_interval(week_day))
         if week_day != semester_info['breakweek_day']:
             process_week(week_day, week_alt_lab, service, semester_info, courses, calendar_ids)
             week_alt_lab = flip_alt_week(week_alt_lab)
@@ -142,7 +156,7 @@ def main():
     courses = convert_courses(data['courses'])
 
     try:
-        calendar_ids = create_calendars(service, courses)
+        calendar_ids = create_calendars(service, courses) if not checklist else None
         process_semester(service, semester_info, courses, calendar_ids)
     
     except AccessTokenRefreshError:
