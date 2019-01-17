@@ -4,7 +4,7 @@ Add PolyMTL classes to Google Calendar
 
 ## Prerequisites
 
-This uses **Python 3**.
+This has only been tested with **Python 3**.
 
 To install dependencies:
 ```
