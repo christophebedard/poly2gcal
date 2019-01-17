@@ -42,22 +42,22 @@ def is_alt_week_exception(date_time, semester_info):
     """
     return date_time.date() in semester_info['alt_exceptions']
 
-def insert_event(service, calendar_id, body):
+def insert_event(service, course_name, calendar_ids, body):
     """
     Display and insert an event (but only if the test flag is not enabled)
     """
     print('EVENT:\n' + repr(body))
     if not test:
-        response_event = service.events().insert(calendarId=calendar_id, body=body).execute()
+        response_event = service.events().insert(calendarId=calendar_ids[course_name], body=body).execute()
 
-def insert_calendar(service, body, calendar_ids):
+def insert_calendar(service, body, course_name, calendar_ids):
     """
     Display and insert a calendar (but only if the test flag is not enabled)
     """
     print('CALENDAR:\n' + repr(body))
     if not test:
         response_cal = service.calendars().insert(body=body).execute()
-        calendar_ids[body['summary']] = response_cal['id']
+        calendar_ids[course_name] = response_cal['id']
 
 def check_lab(week_day, week_alt_lab, course_name, lab, service, semester_info, calendar_ids):
     """
@@ -75,7 +75,7 @@ def check_lab(week_day, week_alt_lab, course_name, lab, service, semester_info, 
             end = start + lab['duration']
             event_name = 'Lab - ' + course_name
             event = create_event_body(event_name, lab['room'], start, end)
-            insert_event(service, calendar_ids[course_name], event)
+            insert_event(service, course_name, calendar_ids, event)
 
 def insert_lectures(week_day, course_name, lectures, service, semester_info, calendar_ids):
     """
@@ -87,7 +87,7 @@ def insert_lectures(week_day, course_name, lectures, service, semester_info, cal
             end = start + lecture['duration']
             event_name = 'Cours - ' + course_name
             event = create_event_body(event_name, lecture['room'], start, end)
-            insert_event(service, calendar_ids[course_name], event)
+            insert_event(service, course_name, calendar_ids, event)
 
 def process_week(week_day, week_alt_lab, service, semester_info, courses, calendar_ids):
     """
@@ -95,7 +95,7 @@ def process_week(week_day, week_alt_lab, service, semester_info, courses, calend
     """
     for course in courses:
         course_name = course['name']
-        # insert_lectures(week_day, course_name, course['lectures'], service, semester_info, calendar_ids)
+        insert_lectures(week_day, course_name, course['lectures'], service, semester_info, calendar_ids)
         check_lab(week_day, week_alt_lab, course_name, course['lab'], service, semester_info, calendar_ids)
 
 def flip_alt_week(alt_week):
@@ -125,7 +125,7 @@ def create_calendars(service, courses):
     for course in courses:
         course_name = course['name']
         calendar = create_calendar_body(course_name)
-        insert_calendar(service, calendar, calendar_ids)
+        insert_calendar(service, calendar, course_name, calendar_ids)
     return calendar_ids
 
 def main():
