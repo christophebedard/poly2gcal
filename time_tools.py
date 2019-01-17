@@ -2,8 +2,8 @@
 
 from datetime import datetime, timedelta, time
 
-WEEKDAYS_INT = { weekday: i for i, weekday in enumerate(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']) }
 
+WEEKDAYS_INT = { weekday: i for i, weekday in enumerate(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']) }
 
 def to_date(time_str):
     """
