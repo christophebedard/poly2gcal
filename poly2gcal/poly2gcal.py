@@ -262,6 +262,7 @@ def create_calendars(
 
 
 def main(
+    data_file_path: str,
     test: bool,
     checklist: bool,
 ) -> None:
@@ -273,7 +274,7 @@ def main(
     """
     service = login() if not test else None
 
-    with open('input_data.json') as f:
+    with open(data_file_path) as f:
         data = json.load(f)
 
     semester_info = data['semester_info']

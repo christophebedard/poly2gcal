@@ -21,6 +21,13 @@ def get_parser() -> argparse.ArgumentParser:
         default=False,
         help='generate checklist of labs to hand in, separated by weeks',
     )
+    parser.add_argument(
+        '-f',
+        '--file',
+        dest='file_path',
+        default='input_data.json',
+        help='the path to the input data JSON file (default: %(default)s)',
+    )
     return parser
 
 

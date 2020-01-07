@@ -9,6 +9,7 @@ from poly2gcal import poly2gcal
 def main() -> None:
     params = args.parse_args()
     poly2gcal.main(
+        params.file_path,
         params.test,
         params.checklist,
     )
