@@ -1,72 +1,103 @@
-## poly2gcal - add PolyMTL classes to Google Calendar
+"""Module for the main poly2gcal logic."""
 
-import argparse
+from datetime import datetime
+from datetime import timedelta
 import json
-from datetime import datetime, timedelta
+from typing import Dict
+from typing import List
+
+from apiclient.discovery import Resource
 from oauth2client.client import AccessTokenRefreshError
 
-from gcal import login, create_calendar_body, create_event_body
-from time_tools import date_to_datetime
-from conversion_tools import convert_semester_info, convert_courses
-from weekdates_intervals import get_interval
+from .conversion_tools import convert_courses
+from .conversion_tools import convert_semester_info
+from .gcal import create_calendar_body
+from .gcal import create_event_body
+from .gcal import login
+from .time_tools import date_to_datetime
+from .weekdates_intervals import get_interval
 
-# parse
-parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('-t',
-                    dest='test',
-                    action='store_const',
-                    const=True,
-                    default=False,
-                    help='test: only preview requests & do not actually add to calendar')
-parser.add_argument('-c',
-                    dest='checklist',
-                    action='store_const',
-                    const=True,
-                    default=False,
-                    help='generate checklist of labs to hand in, separated by weeks')
-args = parser.parse_args()
-test = args.test
-checklist = args.checklist
 
-def is_in_semester(date_time, semester_info):
+def is_in_semester(
+    date_time: datetime,
+    semester_info: Dict,
+) -> bool:
     """
-    Check if a datetime is within the first and last days of the semester
+    Check if a datetime is within the first and last days of the semester.
     """
     return semester_info['first_day'] <= date_time.date() <= semester_info['last_day']
 
-def is_holiday(date, semester_info):
+
+def is_holiday(
+    date: datetime,
+    semester_info: Dict,
+) -> bool:
     """
-    Check if a date is a holiday
+    Check if a date is a holiday.
     """
     return date.date() in semester_info['holidays']
 
-def is_alt_week_exception(date_time, semester_info):
+
+def is_alt_week_exception(
+    date_time: datetime,
+    semester_info: Dict,
+) -> bool:
     """
     Check if a datetime corresponds to an exception to the usual week alternation rule
     (i.e. Monday might be B1 while the rest of the week is B2)
     """
     return date_time.date() in semester_info['alt_exceptions']
 
-def insert_event(service, course_name, calendar_ids, body):
+
+def insert_event(
+    service: Resource,
+    course_name: str,
+    calendar_ids: Dict,
+    body: Dict,
+    test: bool = False,
+) -> None:
     """
-    Insert an event (but only if the test flag is not enabled)
+    Insert an event (but only if the test flag is not enabled).
     """
     print('EVENT:\n' + repr(body))
     if not test:
-        response_event = service.events().insert(calendarId=calendar_ids[course_name], body=body).execute()
+        service.events().insert(
+            calendarId=calendar_ids[course_name],
+            body=body,
+        ).execute()
 
-def insert_calendar(service, body, course_name, calendar_ids):
+
+def insert_calendar(
+    service: Resource,
+    body: Dict,
+    course_name: str,
+    calendar_ids: Dict,
+    test: bool = False,
+) -> None:
     """
-    Insert a calendar (but only if the test flag is not enabled)
+    Insert a calendar (but only if the test flag is not enabled).
     """
     print('CALENDAR:\n' + repr(body))
     if not test:
-        response_cal = service.calendars().insert(body=body).execute()
+        response_cal = service.calendars().insert(
+            body=body,
+        ).execute()
         calendar_ids[course_name] = response_cal['id']
 
-def check_lab(week_day, week_alt_lab, course_name, lab, service, semester_info, calendar_ids):
+
+def check_lab(
+    week_day: datetime,
+    week_alt_lab: str,
+    course_name: str,
+    lab: Dict,
+    service: Resource,
+    semester_info: Dict,
+    calendar_ids: Dict,
+    test: bool = False,
+    checklist: bool = False,
+) -> None:
     """
-    Check if there is a lab in a given week and insert if there is
+    Check if there is a lab in a given week and insert if there is.
     """
     start = date_to_datetime(week_day) + lab['start']
     if is_in_semester(start, semester_info) and not is_holiday(start, semester_info):
@@ -79,43 +110,113 @@ def check_lab(week_day, week_alt_lab, course_name, lab, service, semester_info, 
         if not lab_alt_week or lab_alt_week == current_week_alt:
             if not checklist:
                 end = start + lab['duration']
-                event_name = 'Lab - ' + course_name
-                event = create_event_body(event_name, lab['room'], start, end)
-                insert_event(service, course_name, calendar_ids, event)
+                event_name = f'Lab - {course_name}'
+                event = create_event_body(
+                    event_name,
+                    lab['room'],
+                    start,
+                    end,
+                )
+                insert_event(
+                    service,
+                    course_name,
+                    calendar_ids,
+                    event,
+                    test=test,
+                )
             else:
                 print('Lab {} done'.format(course_name))
 
-def insert_lectures(week_day, course_name, lectures, service, semester_info, calendar_ids):
+
+def insert_lectures(
+    week_day,
+    course_name: str,
+    lectures: List[Dict],
+    service: Resource,
+    semester_info: Dict,
+    calendar_ids: Dict,
+    test: bool = False,
+) -> None:
     """
-    Insert lectures for a course for a given week
+    Insert lectures for a course for a given week.
     """
     for lecture in lectures:
         start = date_to_datetime(week_day) + lecture['start']
         if is_in_semester(start, semester_info) and not is_holiday(start, semester_info):
             end = start + lecture['duration']
-            event_name = 'Cours - ' + course_name
-            event = create_event_body(event_name, lecture['room'], start, end)
-            insert_event(service, course_name, calendar_ids, event)
+            event_name = f'Cours - {course_name}'
+            event = create_event_body(
+                event_name,
+                lecture['room'],
+                start,
+                end,
+            )
+            insert_event(
+                service,
+                course_name,
+                calendar_ids,
+                event,
+                test=test,
+            )
 
-def process_week(week_day, week_alt_lab, service, semester_info, courses, calendar_ids):
+
+def process_week(
+    week_day: datetime,
+    week_alt_lab: str,
+    service: Resource,
+    semester_info: Dict,
+    courses: List[Dict],
+    calendar_ids: Dict,
+    test: bool = False,
+    checklist: bool = False,
+) -> None:
     """
-    Process all courses (lectures and labs) for a given week
+    Process all courses (lectures and labs) for a given week.
     """
     for course in courses:
         course_name = course['name']
-        check_lab(week_day, week_alt_lab, course_name, course['lab'], service, semester_info, calendar_ids)
+        check_lab(
+            week_day,
+            week_alt_lab,
+            course_name,
+            course['lab'],
+            service,
+            semester_info,
+            calendar_ids,
+            test=test,
+            checklist=checklist,
+        )
         if not checklist:
-            insert_lectures(week_day, course_name, course['lectures'], service, semester_info, calendar_ids)
+            insert_lectures(
+                week_day,
+                course_name,
+                course['lectures'],
+                service,
+                semester_info,
+                calendar_ids,
+                test=test,
+            )
 
-def flip_alt_week(alt_week):
+
+def flip_alt_week(
+    alt_week: str,
+) -> str:
     """
-    Flip an alternate week value
+    Flip an alternate week value.
     """
     return 'B2' if alt_week == 'B1' else 'B1'
 
-def process_semester(service, semester_info, courses, calendar_ids):
+
+def process_semester(
+    service: Resource,
+    semester_info: Dict,
+    courses: List[Dict],
+    calendar_ids,
+    test: bool = False,
+    checklist: bool = False,
+) -> None:
     """
-    Process the whole semester, adding lectures and labs
+    Process the whole semester, adding lectures and labs.
     """
     # week by week
     week_day = semester_info['firstweek_day']
@@ -124,24 +225,51 @@ def process_semester(service, semester_info, courses, calendar_ids):
         if checklist:
             print(get_interval(week_day))
         if week_day != semester_info['breakweek_day']:
-            process_week(week_day, week_alt_lab, service, semester_info, courses, calendar_ids)
+            process_week(
+                week_day,
+                week_alt_lab,
+                service,
+                semester_info,
+                courses,
+                calendar_ids,
+                test=test,
+                checklist=checklist,
+            )
             week_alt_lab = flip_alt_week(week_alt_lab)
         week_day += timedelta(weeks=1)
 
-def create_calendars(service, courses):
+
+def create_calendars(
+    service: Resource,
+    courses: List[Dict],
+    test: bool = False,
+) -> Dict:
     """
-    Create a calendar for each course
+    Create a calendar for each course.
     """
     calendar_ids = {}
     for course in courses:
         course_name = course['name']
         calendar = create_calendar_body(course_name)
-        insert_calendar(service, calendar, course_name, calendar_ids)
+        insert_calendar(
+            service,
+            calendar,
+            course_name,
+            calendar_ids,
+            test=test,
+        )
     return calendar_ids
 
-def main():
+
+def main(
+    test: bool,
+    checklist: bool,
+) -> None:
     """
-    Main logic: get API service and process input data
+    Get API service and process input data.
+
+    :param test: whether to only preview requests and not actually send them
+    :param checklist: whether to generate tasks checklists
     """
     service = login() if not test else None
 
@@ -153,11 +281,14 @@ def main():
     courses = convert_courses(data['courses'])
 
     try:
-        calendar_ids = create_calendars(service, courses) if not checklist else None
-        process_semester(service, semester_info, courses, calendar_ids)
-    
+        calendar_ids = create_calendars(service, courses, test=test) if not checklist else None
+        process_semester(
+            service,
+            semester_info,
+            courses,
+            calendar_ids,
+            test=test,
+            checklist=checklist,
+        )
     except AccessTokenRefreshError:
         print('The credentials have been revoked or expired, please re-run the application to re-authorize')
-
-if __name__ == '__main__':
-    main()

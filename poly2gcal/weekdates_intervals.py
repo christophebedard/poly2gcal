@@ -1,28 +1,40 @@
-#!/usr/bin/python3
+"""
+Module to generate week intervals.
 
-## Generate week intervals
-# Used for grouping checklist items
-# example: "Week of January 7 to 13:"
+Used for grouping items.
+example: 'Week of January 7 to 13:'
+"""
 
+from datetime import datetime
+from datetime import timedelta
 import json
-from datetime import datetime, timedelta
-from time_tools import month_from_date
-from conversion_tools import convert_semester_info, convert_courses
 
-def get_interval(date_begin):
-    """
-    Format an interval (starting at the begin date) to string 
-    """
-    date_end = date_begin + timedelta(days=6)
-    begin_month = month_from_date(date_begin)
-    end_month = month_from_date(date_end)
-    return 'Week of {} {} to{} {}:'.format(begin_month,
-                                           date_begin.day,
-                                           ' ' + end_month if begin_month != end_month else '',
-                                           date_end.day)
+from .conversion_tools import convert_courses
+from .conversion_tools import convert_semester_info
+from .time_tools import month_from_date
 
-def main():
-    with open('input_data.json') as f:
+
+def get_interval(
+    start: datetime,
+) -> str:
+    """
+    Format an interval (starting at the begin date) to string
+
+    :param begin: the start date
+    """
+    end = start + timedelta(days=6)
+    start_month = month_from_date(start)
+    end_month = month_from_date(end)
+    return (
+        f'Week of {start_month} {start.day} '
+        f'to{" " + end_month if start_month != end_month else ""} {end.day}:'
+    )
+
+
+def print_intervals(
+    data_file: str = 'input_data.json',
+) -> None:
+    with open(data_file) as f:
         data = json.load(f)
 
     semester_info = data['semester_info']
@@ -32,6 +44,3 @@ def main():
     while first_day <= semester_info['lastweek_day']:
         print(get_interval(first_day))
         first_day += timedelta(weeks=1)
-
-if __name__ == '__main__':
-    main()

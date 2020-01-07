@@ -1,10 +1,17 @@
-## Tools for JSON dictionaries conversion
+"""Module for JSON dictionaries conversion tools."""
 
 from datetime import timedelta
-from time_tools import to_date, timedelta_from_day_and_time, timedelta_from_class_duration
+from typing import Dict
+from typing import List
+
+from .time_tools import timedelta_from_class_duration
+from .time_tools import timedelta_from_day_and_time
+from .time_tools import to_date
 
 
-def convert_courses(courses_json):
+def convert_courses(
+    courses_json: List[Dict],
+) -> List[Dict]:
     """
     Convert input data for courses from JSON to objects when necessary
     """
@@ -34,7 +41,10 @@ def convert_courses(courses_json):
         courses.append(course)
     return courses
 
-def convert_semester_info(semester_info):
+
+def convert_semester_info(
+    semester_info: Dict,
+) -> None:
     """
     Convert input data for semester info from JSON to objects when necessary
     """
