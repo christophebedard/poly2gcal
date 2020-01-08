@@ -1,95 +1,107 @@
 {
     "semester_info": {
-        "firstweek_day": "7/Jan/2019",
-        "first_day": "",
-        "lastweek_day": "8/Apr/2019",
-        "last_day": "",
-        "breakweek_day": "4/Mar/2019",
-        "holidays": [],
+        "firstweek_day": "6/Jan/2020",
+        "first_day": "8/Jan/2020",
+        "lastweek_day": "13/Apr/2020",
+        "last_day": "16/Apr/2020",
+        "breakweek_day": "2/Mar/2020",
+        "holidays": [
+            "10/Apr/2020",
+            "13/Apr/2020"
+        ],
         "alt_exceptions": []
     },
     "courses": [
         {
-            "name": "Systèmes embarqués",
-            "id": "INF3610",
+            "name": "Énerg et dév durable syst inf",
+            "id": "GCH2730",
+            "lectures": [
+                {
+                    "day": "Thursday",
+                    "start": "0930",
+                    "duration": "3",
+                    "room": "M-2004"
+                }
+            ],
+            "labs": [
+                {
+                    "day": "Friday",
+                    "start": "1245",
+                    "duration": "2",
+                    "room": "M-2204",
+                    "week": ""
+                }
+            ]
+        },
+        {
+            "name": "Projet conc syst inform",
+            "id": "INF3995",
+            "lectures": [
+                {
+                    "day": "Monday",
+                    "start": "1245",
+                    "duration": "2",
+                    "room": "L-2710"
+                }
+            ],
+            "labs": [
+                {
+                    "day": "Monday",
+                    "start": "1445",
+                    "duration": "3",
+                    "room": "L-3712",
+                    "week": ""
+                },
+                {
+                    "day": "Friday",
+                    "start": "1245",
+                    "duration": "3",
+                    "room": "L-3712",
+                    "week": ""
+                }
+            ]
+        },
+        {
+            "name": "Technologies multimédias",
+            "id": "INF8770",
             "lectures": [
                 {
                     "day": "Monday",
                     "start": "0830",
                     "duration": "3",
-                    "room": "M-2203"
+                    "room": "M-1120"
                 }
             ],
-            "lab": {
-                "day": "Friday",
-                "start": "0830",
-                "duration": "3",
-                "room": "L-3712",
-                "week": "B1"
-            }
-        },
-        {
-            "name": "Sécurité informatique",
-            "id": "INF4420A",
-            "lectures": [
+            "labs": [
                 {
                     "day": "Wednesday",
-                    "start": "1445",
+                    "start": "0830",
                     "duration": "3",
-                    "room": "M-1510"
+                    "room": "L-4712",
+                    "week": "B2"
                 }
-            ],
-            "lab": {
-                "day": "Thursday",
-                "start": "1345",
-                "duration": "3",
-                "room": "L-4712",
-                "week": "B1"
-            }
+            ]
         },
         {
-            "name": "Syst répartis et infonuagique",
-            "id": "INF8480",
+            "name": "Analyse et conception d'algo",
+            "id": "INF8775",
             "lectures": [
                 {
-                    "day": "Friday",
-                    "start": "0830",
+                    "day": "Thursday",
+                    "start": "0930",
                     "duration": "3",
                     "room": "M-1010"
                 }
             ],
-            "lab": {
-                "day": "Tuesday",
-                "start": "1545",
-                "duration": "3",
-                "room": "L-4712",
-                "week": "B1"
-            }
-        },
-        {
-            "name": "Champs électromagnétiques",
-            "id": "PHS1102",
-            "lectures": [
-                {
-                    "day": "Monday",
-                    "start": "1130",
-                    "duration": "1",
-                    "room": "B-316.1"
-                },
+            "labs": [
                 {
                     "day": "Wednesday",
-                    "start": "1245",
-                    "duration": "2",
-                    "room": "B-316.1"
+                    "start": "0830",
+                    "duration": "3",
+                    "room": "L-4714",
+                    "week": "B1"
                 }
-            ],
-            "lab": {
-                "day": "Friday",
-                "start": "1245",
-                "duration": "3",
-                "room": "C-539.6",
-                "week": ""
-            }
+            ]
         }
     ]
 }
