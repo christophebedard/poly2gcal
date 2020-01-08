@@ -30,13 +30,15 @@ def convert_courses(
             lectures.append(lecture)
         course['lectures'] = lectures
 
-        lab_json = course_json['lab']
-        lab = {}
-        lab['start'] = timedelta_from_day_and_time(lab_json['day'], lab_json['start'])
-        lab['duration'] = timedelta_from_class_duration(int(lab_json['duration']))
-        lab['room'] = lab_json['room']
-        lab['week'] = '' if 'week' not in lab_json else lab_json['week']
-        course['lab'] = lab
+        labs = []
+        for lab_json in course_json['labs']:
+            lab = {}
+            lab['start'] = timedelta_from_day_and_time(lab_json['day'], lab_json['start'])
+            lab['duration'] = timedelta_from_class_duration(int(lab_json['duration']))
+            lab['room'] = lab_json['room']
+            lab['week'] = '' if 'week' not in lab_json else lab_json['week']
+            labs.append(lab)
+        course['labs'] = labs
 
         courses.append(course)
     return courses

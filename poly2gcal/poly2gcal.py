@@ -128,8 +128,36 @@ def check_lab(
                 print('Lab {} done'.format(course_name))
 
 
+def insert_labs(
+    week_day: datetime,
+    week_alt_lab: str,
+    course_name: str,
+    labs: List[Dict],
+    service: Resource,
+    semester_info: Dict,
+    calendar_ids: Dict,
+    test: bool = False,
+    checklist: bool = False,
+) -> None:
+    """
+    Insert labs for a course for a given week.
+    """
+    for lab in labs:
+        check_lab(
+            week_day,
+            week_alt_lab,
+            course_name,
+            lab,
+            service,
+            semester_info,
+            calendar_ids,
+            test=test,
+            checklist=checklist,
+        )
+
+
 def insert_lectures(
-    week_day,
+    week_day: datetime,
     course_name: str,
     lectures: List[Dict],
     service: Resource,
@@ -175,11 +203,11 @@ def process_week(
     """
     for course in courses:
         course_name = course['name']
-        check_lab(
+        insert_labs(
             week_day,
             week_alt_lab,
             course_name,
-            course['lab'],
+            course['labs'],
             service,
             semester_info,
             calendar_ids,
