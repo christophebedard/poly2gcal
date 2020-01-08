@@ -6,6 +6,7 @@ from poly2gcal.weekdates_intervals import print_intervals
 
 
 def main() -> None:
+    """Entrypoint."""
     print_intervals('input_data.json')
 
 

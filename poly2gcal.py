@@ -7,6 +7,7 @@ from poly2gcal import poly2gcal
 
 
 def main() -> None:
+    """Entrypoint."""
     params = args.parse_args()
     poly2gcal.main(
         params.file_path,

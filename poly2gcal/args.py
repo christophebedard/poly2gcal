@@ -4,6 +4,7 @@ import argparse
 
 
 def get_parser() -> argparse.ArgumentParser:
+    """Get arguments parser."""
     parser = argparse.ArgumentParser(description='')
     parser.add_argument(
         '-t',
@@ -34,4 +35,5 @@ def get_parser() -> argparse.ArgumentParser:
 
 
 def parse_args() -> argparse.Namespace:
+    """Parse arguments."""
     return get_parser().parse_args()

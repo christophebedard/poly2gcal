@@ -5,11 +5,10 @@ Used for grouping items.
 example: 'Week of January 7 to 13:'
 """
 
+import json
 from datetime import datetime
 from datetime import timedelta
-import json
 
-from .conversion_tools import convert_courses
 from .conversion_tools import convert_semester_info
 from .time_tools import month_from_date
 
@@ -18,9 +17,10 @@ def get_interval(
     start: datetime,
 ) -> str:
     """
-    Format an interval (starting at the begin date) to string
+    Format an interval (starting at the begin date) to string.
 
     :param begin: the start date
+    :return: the interval as a string
     """
     end = start + timedelta(days=6)
     start_month = month_from_date(start)
@@ -34,6 +34,7 @@ def get_interval(
 def print_intervals(
     data_file: str = 'input_data.json',
 ) -> None:
+    """Entrypoint for reading input data file and printing intervals."""
     with open(data_file) as f:
         data = json.load(f)
 

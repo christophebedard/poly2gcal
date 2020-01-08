@@ -1,12 +1,13 @@
 """Module for the main poly2gcal logic."""
 
+import json
 from datetime import datetime
 from datetime import timedelta
-import json
 from typing import Dict
 from typing import List
 
 from apiclient.discovery import Resource
+
 from oauth2client.client import AccessTokenRefreshError
 
 from .conversion_tools import convert_courses
@@ -24,6 +25,10 @@ def is_in_semester(
 ) -> bool:
     """
     Check if a datetime is within the first and last days of the semester.
+
+    :param date_time: the date/time
+    :param semester_info: the semester info
+    :return True if the given date/time is in the semester, False otherwise
     """
     return semester_info['first_day'] <= date_time.date() <= semester_info['last_day']
 
@@ -34,6 +39,10 @@ def is_holiday(
 ) -> bool:
     """
     Check if a date is a holiday.
+
+    :param date: the date/time
+    :param semester_info: the semester info
+    :return True if the given date/time is a holiday, False otherwise
     """
     return date.date() in semester_info['holidays']
 
@@ -43,8 +52,13 @@ def is_alt_week_exception(
     semester_info: Dict,
 ) -> bool:
     """
-    Check if a datetime corresponds to an exception to the usual week alternation rule
-    (i.e. Monday might be B1 while the rest of the week is B2)
+    Check if a datetime corresponds to an exception to the usual week alternation rule.
+
+    i.e. Monday might be B1 while the rest of the week is B2.
+
+    :param date: the date/time
+    :param semester_info: the semester info
+    :return True if the given date/time is an exception, False otherwise
     """
     return date_time.date() in semester_info['alt_exceptions']
 
@@ -56,9 +70,7 @@ def insert_event(
     body: Dict,
     test: bool = False,
 ) -> None:
-    """
-    Insert an event (but only if the test flag is not enabled).
-    """
+    """Insert an event (but only if the test flag is not enabled)."""
     print('EVENT:\n' + repr(body))
     if not test:
         service.events().insert(
@@ -74,9 +86,7 @@ def insert_calendar(
     calendar_ids: Dict,
     test: bool = False,
 ) -> None:
-    """
-    Insert a calendar (but only if the test flag is not enabled).
-    """
+    """Insert a calendar (but only if the test flag is not enabled)."""
     print('CALENDAR:\n' + repr(body))
     if not test:
         response_cal = service.calendars().insert(
@@ -96,9 +106,7 @@ def check_lab(
     test: bool = False,
     checklist: bool = False,
 ) -> None:
-    """
-    Check if there is a lab in a given week and insert if there is.
-    """
+    """Check if there is a lab in a given week and insert if there is."""
     start = date_to_datetime(week_day) + lab['start']
     if is_in_semester(start, semester_info) and not is_holiday(start, semester_info):
         lab_alt_week = lab['week']
@@ -139,9 +147,7 @@ def insert_labs(
     test: bool = False,
     checklist: bool = False,
 ) -> None:
-    """
-    Insert labs for a course for a given week.
-    """
+    """Insert labs for a course for a given week."""
     for lab in labs:
         check_lab(
             week_day,
@@ -165,9 +171,7 @@ def insert_lectures(
     calendar_ids: Dict,
     test: bool = False,
 ) -> None:
-    """
-    Insert lectures for a course for a given week.
-    """
+    """Insert lectures for a course for a given week."""
     for lecture in lectures:
         start = date_to_datetime(week_day) + lecture['start']
         if is_in_semester(start, semester_info) and not is_holiday(start, semester_info):
@@ -198,9 +202,7 @@ def process_week(
     test: bool = False,
     checklist: bool = False,
 ) -> None:
-    """
-    Process all courses (lectures and labs) for a given week.
-    """
+    """Process all courses (lectures and labs) for a given week."""
     for course in courses:
         course_name = course['name']
         insert_labs(
@@ -229,9 +231,7 @@ def process_week(
 def flip_alt_week(
     alt_week: str,
 ) -> str:
-    """
-    Flip an alternate week value.
-    """
+    """Flip an alternate week value."""
     return 'B2' if alt_week == 'B1' else 'B1'
 
 
@@ -243,9 +243,7 @@ def process_semester(
     test: bool = False,
     checklist: bool = False,
 ) -> None:
-    """
-    Process the whole semester, adding lectures and labs.
-    """
+    """Process the whole semester, adding lectures and labs."""
     # week by week
     week_day = semester_info['firstweek_day']
     week_alt_lab = 'B1'
@@ -272,9 +270,7 @@ def create_calendars(
     courses: List[Dict],
     test: bool = False,
 ) -> Dict:
-    """
-    Create a calendar for each course.
-    """
+    """Create a calendar for each course."""
     calendar_ids = {}
     for course in courses:
         course_name = course['name']
@@ -320,4 +316,7 @@ def main(
             checklist=checklist,
         )
     except AccessTokenRefreshError:
-        print('The credentials have been revoked or expired, please re-run the application to re-authorize')
+        print((
+            'The credentials have been revoked or expired. '
+            'Please re-run the application to re-authorize.'
+        ))
