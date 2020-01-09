@@ -63,6 +63,17 @@ def is_alt_week_exception(
     return date_time.date() in semester_info['alt_exceptions']
 
 
+def print_event(
+    event: Dict,
+) -> None:
+    """Print information for a calendar event."""
+    title = event['summary']
+    location = event['location']
+    time_from = event['start']['dateTime']
+    time_to = event['end']['dateTime']
+    print(f'{title} @ {location} from {time_from} to {time_to}')
+
+
 def insert_event(
     service: Resource,
     course_name: str,
@@ -71,12 +82,20 @@ def insert_event(
     test: bool = False,
 ) -> None:
     """Insert an event (but only if the test flag is not enabled)."""
-    print('EVENT:\n' + repr(body))
+    print_event(body)
     if not test:
         service.events().insert(
             calendarId=calendar_ids[course_name],
             body=body,
         ).execute()
+
+
+def print_calendar(
+    calendar: Dict,
+) -> None:
+    """Print information for a calendar."""
+    title = calendar['summary']
+    print(f'CALENDAR: {title}')
 
 
 def insert_calendar(
@@ -87,7 +106,7 @@ def insert_calendar(
     test: bool = False,
 ) -> None:
     """Insert a calendar (but only if the test flag is not enabled)."""
-    print('CALENDAR:\n' + repr(body))
+    print_calendar(body)
     if not test:
         response_cal = service.calendars().insert(
             body=body,
@@ -248,8 +267,7 @@ def process_semester(
     week_day = semester_info['firstweek_day']
     week_alt_lab = 'B1'
     while week_day <= semester_info['lastweek_day']:
-        if checklist:
-            print(get_interval(week_day))
+        print(get_interval(week_day))
         if week_day != semester_info['breakweek_day']:
             process_week(
                 week_day,
