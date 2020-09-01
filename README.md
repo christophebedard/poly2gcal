@@ -27,6 +27,43 @@ $ pip3 install -r requirements.txt
    $ ./poly2gcal.py -t
    ```
 
+## Input format
+
+In general:
+
+* date format is YYYY-MM-DD
+* time format 1234 (e.g. 0830 for 8:30 AM)
+* exam period is not considered as being part of the semester when it comes to classes/lectures/labs
+
+Format description for `input_data.json`:
+
+* `semester_info`
+   * `firstweek_day`: date for Monday of the first week of the semester (even if the semester does not start on that day)
+   * `first_day`: date of first actual day of the semester (equal to `firstweek_day` or some days later in the same week)
+   * `lastweek_day`: date for Monday of the last week of the semester (last week being the last week of classes, i.e. excluding the exam period)
+   * `last_day`: date of last actual day of the semester (equal to `lastweek_day` or some day before in the same week)
+   * `breakweek_day`: date for Monday of the mid-semester break week
+   * `holidays`: dates for holidays during the semester (no classes or labs or anything)
+   * `alt_exceptions`: TODO
+* `courses`
+   * content for one course:
+      * `name`: name of the course (used as the name for the class' calendar and in the calendar events)
+      * `id`: course ID (e.g. ABC1234); not used
+      * `lectures`
+         * content for one lecture
+            * `day`: day of the week (e.g. Monday)
+            * `start`: start time
+            * `duration`: duration in number of 50-minute blocks (e.g. a lecture from 0830 to 1120 has a duration of 3)
+            * `room`: location/room (or empty)
+      * `labs`
+         * content for one lab
+            * `day`: see above
+            * `start`: see above
+            * `duration`: see above
+            * `room`: see above
+            * `week`: B1 or B2 if alternating between weeks/biweekly, or empty if weekly
+
 ## TODO
 
+* infer `firstweek_day` and `lastweek_day` from `first_day` and `last_day`, respectively
 * get course info (lecture/lab times) from PolyMTL's website
