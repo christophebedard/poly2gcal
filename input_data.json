@@ -1,105 +1,119 @@
 {
     "semester_info": {
-        "firstweek_day": "6/Jan/2020",
-        "first_day": "8/Jan/2020",
-        "lastweek_day": "13/Apr/2020",
-        "last_day": "16/Apr/2020",
-        "breakweek_day": "2/Mar/2020",
+        "firstweek_day": "2020-08-31",
+        "first_day": "2020-08-31",
+        "lastweek_day": "2020-12-07",
+        "last_day": "2020-12-07",
+        "breakweek_day": "2020-10-12",
         "holidays": [
-            "10/Apr/2020",
-            "13/Apr/2020"
+            "2020-09-07"
         ],
         "alt_exceptions": []
     },
     "courses": [
         {
-            "name": "Énerg et dév durable syst inf",
-            "id": "GCH2730",
+            "name": "Sécu réseaux",
+            "id": "INF8402",
             "lectures": [
                 {
-                    "day": "Thursday",
-                    "start": "0930",
-                    "duration": "3",
-                    "room": "M-2004"
-                }
-            ],
-            "labs": [
-                {
-                    "day": "Friday",
-                    "start": "1245",
-                    "duration": "2",
-                    "room": "M-2204",
-                    "week": ""
-                }
-            ]
-        },
-        {
-            "name": "Projet conc syst inform",
-            "id": "INF3995",
-            "lectures": [
-                {
-                    "day": "Monday",
-                    "start": "1245",
-                    "duration": "2",
-                    "room": "L-2710"
-                }
-            ],
-            "labs": [
-                {
-                    "day": "Monday",
-                    "start": "1445",
-                    "duration": "3",
-                    "room": "L-3712",
-                    "week": ""
-                },
-                {
-                    "day": "Friday",
-                    "start": "1245",
-                    "duration": "3",
-                    "room": "L-3712",
-                    "week": ""
-                }
-            ]
-        },
-        {
-            "name": "Technologies multimédias",
-            "id": "INF8770",
-            "lectures": [
-                {
-                    "day": "Monday",
+                    "day": "Tuesday",
                     "start": "0830",
                     "duration": "3",
-                    "room": "M-1120"
+                    "room": ""
                 }
             ],
             "labs": [
                 {
                     "day": "Wednesday",
+                    "start": "1745",
+                    "duration": "3",
+                    "room": "",
+                    "week": "B1"
+                }
+            ]
+        },
+        {
+            "name": "Syst parallèles",
+            "id": "INF8601",
+            "lectures": [
+                {
+                    "day": "Friday",
                     "start": "0830",
                     "duration": "3",
-                    "room": "L-4712",
+                    "room": ""
+                }
+            ],
+            "labs": [
+                {
+                    "day": "Monday",
+                    "start": "0830",
+                    "duration": "3",
+                    "room": "",
+                    "week": "B1"
+                }
+            ]
+        },
+        {
+            "name": "Traitement sig et img",
+            "id": "INF8725",
+            "lectures": [
+                {
+                    "day": "Wednesday",
+                    "start": "0930",
+                    "duration": "3",
+                    "room": ""
+                }
+            ],
+            "labs": [
+                {
+                    "day": "Wednesday",
+                    "start": "1545",
+                    "duration": "3",
+                    "room": "",
                     "week": "B2"
                 }
             ]
         },
         {
-            "name": "Analyse et conception d'algo",
-            "id": "INF8775",
+            "name": "Apps multimédias",
+            "id": "INF8801A",
             "lectures": [
                 {
                     "day": "Thursday",
                     "start": "0930",
                     "duration": "3",
-                    "room": "M-1010"
+                    "room": ""
                 }
             ],
             "labs": [
                 {
-                    "day": "Wednesday",
-                    "start": "0830",
+                    "day": "Tuesday",
+                    "start": "1545",
                     "duration": "3",
-                    "room": "L-4714",
+                    "room": "",
                     "week": "B1"
+                }
+            ]
+        },
+        {
+            "name": "Projet 4",
+            "id": "INF8970",
+            "lectures": [
+            ],
+            "labs": [
+                {
+                    "day": "Monday",
+                    "start": "1245",
+                    "duration": "4",
+                    "room": "",
+                    "week": ""
+                },
+                {
+                    "day": "Thursday",
+                    "start": "0830",
+                    "duration": "4",
+                    "room": "",
+                    "week": ""
                 }
             ]
         }
