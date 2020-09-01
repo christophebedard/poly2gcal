@@ -35,7 +35,7 @@ def to_date(
     time_str: str,
 ) -> date:
     """Get date object from date string."""
-    return datetime.strptime(time_str, '%d/%b/%Y').date()
+    return datetime.strptime(time_str, '%Y-%m-%d').date()
 
 
 def date_to_datetime(
