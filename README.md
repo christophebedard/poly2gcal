@@ -7,8 +7,9 @@ Add PolyMTL classes to Google Calendar
 This has only been tested with **Python 3**.
 
 To install dependencies:
-```
-pip3 install --trusted-host pypi.python.org -r requirements.txt
+
+```shell
+$ pip3 install -r requirements.txt
 ```
 
 ## Usage
@@ -18,12 +19,12 @@ pip3 install --trusted-host pypi.python.org -r requirements.txt
 2. get Google Calendar API access through [Google API Console](https://console.developers.google.com/) and place your `client_secrets.json` file in this directory (see [here](https://developers.google.com/api-client-library/python/guide/aaa_oauth#acquiring--client-ids-and-secrets) & [here](https://developers.google.com/api-client-library/python/guide/aaa_client_secrets))
 
 3. run
-   ```
-   ./poly2gcal.py
+   ```shell
+   $ ./poly2gcal.py
    ```
    if you only want to see the resulting events without actually adding them to your calendar, use
-   ```
-   ./poly2gcal.py -t
+   ```shell
+   $ ./poly2gcal.py -t
    ```
 
 ## TODO
