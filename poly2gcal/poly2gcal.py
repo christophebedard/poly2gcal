@@ -91,7 +91,7 @@ def print_event(
     location = event['location']
     time_from = event['start']['dateTime']
     time_to = event['end']['dateTime']
-    print(f'{title} @ {location} from {time_from} to {time_to}')
+    print(f'{title}{" @ " + location if location else ""} from {time_from} to {time_to}')
 
 
 def insert_event(
