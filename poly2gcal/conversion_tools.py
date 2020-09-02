@@ -20,7 +20,6 @@
 
 """Module for JSON dictionaries conversion tools."""
 
-from datetime import timedelta
 from typing import Dict
 from typing import List
 
@@ -89,4 +88,6 @@ def convert_semester_info(
     semester_info['lastweek_day'] = monday_of_same_week(semester_info['last_day'])
     semester_info['breakweek_day'] = to_date(semester_info['breakweek_day'])
     semester_info['holidays'] = [to_date(day) for day in semester_info.get('holidays', [])]
-    semester_info['alt_exceptions'] = [to_date(day) for day in semester_info.get('alt_exceptions', [])]
+    semester_info['alt_exceptions'] = [
+        to_date(day) for day in semester_info.get('alt_exceptions', [])
+    ]
