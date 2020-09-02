@@ -65,5 +65,4 @@ Format description for `input_data.json`:
 
 ## TODO
 
-* infer `firstweek_day` and `lastweek_day` from `first_day` and `last_day`, respectively
 * get course info (lecture/lab times) from PolyMTL's website
