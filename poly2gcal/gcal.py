@@ -79,6 +79,7 @@ def create_calendar_body(
 def create_event_body(
     event_name: str,
     location: str,
+    description: str,
     start: datetime,
     end: datetime,
     timezone: str = 'America/Toronto',
@@ -88,6 +89,7 @@ def create_event_body(
 
     :param event_name: the name of the calendar event
     :param location: the event location
+    :param description: the event description
     :param start: the start date/time
     :param end: the end date/time
     :param timezone: the timezone
@@ -96,6 +98,7 @@ def create_event_body(
     return {
         'summary': event_name,
         'location': location,
+        'description': description,
         'start': {
             'dateTime': start.isoformat(),
             'timeZone': timezone,

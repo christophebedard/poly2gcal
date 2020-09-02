@@ -89,9 +89,12 @@ def print_event(
     """Print information for a calendar event."""
     title = event['summary']
     location = event['location']
+    description = event['description']
     time_from = event['start']['dateTime']
     time_to = event['end']['dateTime']
     print(f'{title}{" @ " + location if location else ""} from {time_from} to {time_to}')
+    if description:
+        print(f'\t{description}')
 
 
 def insert_event(
@@ -161,6 +164,7 @@ def check_lab(
                 event = create_event_body(
                     event_name,
                     lab['room'],
+                    lab['description'],
                     start,
                     end,
                 )
@@ -219,6 +223,7 @@ def insert_lectures(
             event = create_event_body(
                 event_name,
                 lecture['room'],
+                lecture['description'],
                 start,
                 end,
             )

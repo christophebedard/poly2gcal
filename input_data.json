@@ -19,7 +19,8 @@
                     "day": "Tuesday",
                     "start": "0830",
                     "duration": "3",
-                    "room": ""
+                    "room": "zoom",
+                    "description": "ZOOM LINK HERE"
                 }
             ],
             "labs": [
@@ -27,7 +28,6 @@
                     "day": "Wednesday",
                     "start": "1745",
                     "duration": "3",
-                    "room": "",
                     "week": "B1"
                 }
             ]
@@ -40,7 +40,8 @@
                     "day": "Friday",
                     "start": "0830",
                     "duration": "3",
-                    "room": ""
+                    "room": "webex",
+                    "description": "WEBEX LINK HERE"
                 }
             ],
             "labs": [
@@ -48,7 +49,6 @@
                     "day": "Monday",
                     "start": "0830",
                     "duration": "3",
-                    "room": "",
                     "week": "B1"
                 }
             ]
@@ -61,7 +61,8 @@
                     "day": "Wednesday",
                     "start": "0930",
                     "duration": "3",
-                    "room": ""
+                    "room": "zoom",
+                    "description": "ZOOM LINK HERE"
                 }
             ],
             "labs": [
@@ -69,7 +70,7 @@
                     "day": "Wednesday",
                     "start": "1545",
                     "duration": "3",
-                    "room": "",
+                    "room": "teams",
                     "week": "B2"
                 }
             ]
@@ -82,7 +83,8 @@
                     "day": "Thursday",
                     "start": "0930",
                     "duration": "3",
-                    "room": ""
+                    "room": "zoom",
+                    "description": "ZOOM LINK HERE"
                 }
             ],
             "labs": [
@@ -90,7 +92,7 @@
                     "day": "Tuesday",
                     "start": "1545",
                     "duration": "3",
-                    "room": "",
+                    "room": "teams",
                     "week": "B1"
                 }
             ]
@@ -104,16 +106,12 @@
                 {
                     "day": "Monday",
                     "start": "1245",
-                    "duration": "4",
-                    "room": "",
-                    "week": ""
+                    "duration": "4"
                 },
                 {
                     "day": "Thursday",
                     "start": "0830",
-                    "duration": "4",
-                    "room": "",
-                    "week": ""
+                    "duration": "4"
                 }
             ]
         }

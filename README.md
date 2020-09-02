@@ -54,14 +54,16 @@ Format description for `input_data.json`:
             * `day`: day of the week (e.g. Monday)
             * `start`: start time
             * `duration`: duration in number of 50-minute blocks (e.g. a lecture from 0830 to 1120 has a duration of 3)
-            * `room`: location/room (or empty)
+            * `room`: location/room (or empty/not set)
+            * `description`: description to use for all these events (or empty/not set)
       * `labs`
          * content for one lab
             * `day`: see above
             * `start`: see above
             * `duration`: see above
             * `room`: see above
-            * `week`: B1 or B2 if alternating between weeks/biweekly, or empty if weekly
+            * `description`: see above
+            * `week`: B1 or B2 if alternating between weeks/biweekly, or empty/not set if weekly
 
 ## TODO
 
