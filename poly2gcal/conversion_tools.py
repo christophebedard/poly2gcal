@@ -90,7 +90,3 @@ def convert_semester_info(
     semester_info['breakweek_day'] = to_date(semester_info['breakweek_day'])
     semester_info['holidays'] = [to_date(day) for day in semester_info.get('holidays', [])]
     semester_info['alt_exceptions'] = [to_date(day) for day in semester_info.get('alt_exceptions', [])]
-    print('firstweek_day=', semester_info['firstweek_day'])
-    print('first_day=', semester_info['first_day'])
-    print('lastweek_day=', semester_info['lastweek_day'])
-    print('last_day=', semester_info['last_day'])
