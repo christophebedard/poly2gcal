@@ -96,8 +96,9 @@ def print_event(
     title = event['summary']
     location = event['location']
     description = event['description']
-    time_from = event['start']['dateTime']
-    time_to = event['end']['dateTime']
+    # Convert both ways just to get a better format
+    time_from = datetime.fromisoformat(event['start']['dateTime']).strftime('%Y-%m-%d %H%M')
+    time_to = datetime.fromisoformat(event['end']['dateTime']).strftime('%H%M')
     print(f'{title}{" @ " + location if location else ""} from {time_from} to {time_to}')
     if description:
         print(f'\t{description}')
