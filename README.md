@@ -3,6 +3,8 @@
 Add PolyMTL classes to Google Calendar.
 
 * supports both lectures and labs
+   * lecture event title format: "Cours - ${class_name}"
+   * lab event title format: "Lab - ${class_name}"
 * supports B1/B2 week alternation and exceptions
 * supports break week and holidays
 * creates one calendar per class
