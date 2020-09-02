@@ -34,6 +34,7 @@ In general:
 * date format is `YYYY-MM-DD`
 * time format is `0123` (e.g. `0830` for 8:30 AM)
 * exam period is not considered as being part of the semester when it comes to classes/lectures/labs
+* by default, the week with the first day of the semester is B1, and the next week is B2, etc., and the break week is skipped
 
 Format description for `input_data.json`:
 
@@ -42,7 +43,8 @@ Format description for `input_data.json`:
    * `last_day`: date of last actual day of the semester (excluding the exam period)
    * `breakweek_day`: date for Monday of the mid-semester break week
    * `holidays`: dates for holidays during the semester (no classes or labs or anything), or empty/not set
-   * `alt_exceptions`: TODO (or empty/not set)
+   * `alt_exceptions`: dates on which to start flipping the week alternation (e.g. B1 to B2) TODO (or empty/not set)
+      * example: "2020-09-14" (Monday September 14 2020) --> all Mondays from 2020-09-14 onwards will be flipped
 * `courses`
    * content for one course:
       * `name`: name of the course (used as the name for the class' calendar and in the calendar events)

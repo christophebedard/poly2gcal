@@ -76,11 +76,17 @@ def is_alt_week_exception(
 
     i.e. Monday might be B1 while the rest of the week is B2.
 
+    For a given date to be an exception, it has to be the same weekday as an alt_exception, and
+    has to be an greater/later or equal date as an alt_exception.
+
     :param date: the date/time
     :param semester_info: the semester info
     :return True if the given date/time is an exception, False otherwise
     """
-    return date_time.date() in semester_info['alt_exceptions']
+    return any(
+        date_time.date().weekday() == alt_exception.weekday() and date_time.date() >= alt_exception
+        for alt_exception in semester_info['alt_exceptions']
+    )
 
 
 def print_event(
