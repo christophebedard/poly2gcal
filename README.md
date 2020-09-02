@@ -1,6 +1,13 @@
 # poly2gcal
 
-Add PolyMTL classes to Google Calendar
+Add PolyMTL classes to Google Calendar.
+
+* supports both lectures and labs
+* supports B1/B2 week alternation and exceptions
+* supports break week and holidays
+* creates one calendar per class
+
+https://xkcd.com/1319/
 
 ## Prerequisites
 
@@ -17,15 +24,23 @@ $ pip3 install -r requirements.txt
 1. add course data to [`input_data.json`](./input_data.json) (or modify the existing one)
 
 2. get Google Calendar API access through [Google API Console](https://console.developers.google.com/) and place your `client_secrets.json` file in this directory (you may have to rename it); see [here](https://github.com/googleapis/google-api-python-client/blob/master/docs/client-secrets.md)
+   * on first use, it will ask you to login and allow it to modify your calendar
 
 3. run
    ```shell
    $ ./poly2gcal.py
    ```
-   if you only want to see the resulting events without actually adding them to your calendar, use
+   if you only want to see the resulting events without actually adding them to your calendar (e.g. to validate), use
    ```shell
-   $ ./poly2gcal.py -t
+   $ ./poly2gcal.py --test
    ```
+   for more options
+   ```shell
+   $ ./poly2gcal.py --help
+
+4. check your Google calendar
+   * each class has its own calendar
+   * make sure to validate the result
 
 ## Input format
 
