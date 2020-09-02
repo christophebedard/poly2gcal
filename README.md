@@ -14,7 +14,7 @@ $ pip3 install -r requirements.txt
 
 ## Usage
 
-1. add course data to [`input_data.json`](./input_data.json)
+1. add course data to [`input_data.json`](./input_data.json) (or modify the existing one)
 
 2. get Google Calendar API access through [Google API Console](https://console.developers.google.com/) and place your `client_secrets.json` file in this directory (you may have to rename it); see [here](https://github.com/googleapis/google-api-python-client/blob/master/docs/client-secrets.md)
 
