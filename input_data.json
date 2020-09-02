@@ -1,8 +1,6 @@
 {
     "semester_info": {
-        "firstweek_day": "2020-08-31",
         "first_day": "2020-08-31",
-        "lastweek_day": "2020-12-07",
         "last_day": "2020-12-07",
         "breakweek_day": "2020-10-12",
         "holidays": [

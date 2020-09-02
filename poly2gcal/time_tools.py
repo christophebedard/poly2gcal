@@ -45,6 +45,13 @@ def date_to_datetime(
     return datetime.combine(date, time())
 
 
+def monday_of_same_week(
+    date: date,
+) -> date:
+    """Get a date for the Monday (first day) of the same week as another date."""
+    return date - timedelta(days=date.weekday())
+
+
 def weekday_int(
     weekday_str: str,
 ) -> int:

@@ -38,17 +38,15 @@ In general:
 Format description for `input_data.json`:
 
 * `semester_info`
-   * `firstweek_day`: date for Monday of the first week of the semester (even if the semester does not start on that day)
-   * `first_day`: date of first actual day of the semester (equal to `firstweek_day` or some days later in the same week)
-   * `lastweek_day`: date for Monday of the last week of the semester (last week being the last week of classes, i.e. excluding the exam period)
-   * `last_day`: date of last actual day of the semester (equal to `lastweek_day` or some day before in the same week)
+   * `first_day`: date of first actual day of the semester
+   * `last_day`: date of last actual day of the semester (excluding the exam period)
    * `breakweek_day`: date for Monday of the mid-semester break week
-   * `holidays`: dates for holidays during the semester (no classes or labs or anything)
-   * `alt_exceptions`: TODO
+   * `holidays`: dates for holidays during the semester (no classes or labs or anything), or empty/not set
+   * `alt_exceptions`: TODO (or empty/not set)
 * `courses`
    * content for one course:
       * `name`: name of the course (used as the name for the class' calendar and in the calendar events)
-      * `id`: course ID (e.g. ABC1234); not used
+      * `id`: course ID (e.g. ABC1234) or empty/not set; not used
       * `lectures`
          * content for one lecture
             * `day`: day of the week (e.g. Monday)

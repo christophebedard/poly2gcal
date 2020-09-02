@@ -24,6 +24,7 @@ from datetime import timedelta
 from typing import Dict
 from typing import List
 
+from .time_tools import monday_of_same_week
 from .time_tools import timedelta_from_class_duration
 from .time_tools import timedelta_from_day_and_time
 from .time_tools import to_date
@@ -42,7 +43,7 @@ def convert_courses(
     for course_json in courses_json:
         course = {}
         course['name'] = course_json['name']
-        course['id'] = course_json['id']
+        course['id'] = course_json.get('id', '')
 
         lectures = []
         for lecture_json in course_json['lectures']:
@@ -78,24 +79,18 @@ def convert_semester_info(
     """
     Convert input data for semester info from JSON to objects when necessary.
 
+    This is done in-place, i.e. updating the same dict.
+
     :param semester_info: the semester info to convert
     """
-    semester_info['firstweek_day'] = to_date(semester_info['firstweek_day'])
-    semester_info['first_day'] = \
-        semester_info['firstweek_day'] \
-        if 'first_day' not in semester_info or not semester_info['first_day'] \
-        else to_date(semester_info['first_day'])
-    semester_info['lastweek_day'] = to_date(semester_info['lastweek_day'])
-    semester_info['last_day'] = \
-        (semester_info['lastweek_day'] + timedelta(days=4)) \
-        if 'last_day' not in semester_info or not semester_info['last_day'] \
-        else to_date(semester_info['last_day'])
+    semester_info['first_day'] = to_date(semester_info['first_day'])
+    semester_info['firstweek_day'] = monday_of_same_week(semester_info['first_day'])
+    semester_info['last_day'] = to_date(semester_info['last_day'])
+    semester_info['lastweek_day'] = monday_of_same_week(semester_info['last_day'])
     semester_info['breakweek_day'] = to_date(semester_info['breakweek_day'])
-    semester_info['holidays'] = \
-        [to_date(day) for day in semester_info['holidays']] \
-        if 'holidays' in semester_info \
-        else []
-    semester_info['alt_exceptions'] = \
-        [to_date(day) for day in semester_info['alt_exceptions']] \
-        if 'alt_exceptions' in semester_info \
-        else []
+    semester_info['holidays'] = [to_date(day) for day in semester_info.get('holidays', [])]
+    semester_info['alt_exceptions'] = [to_date(day) for day in semester_info.get('alt_exceptions', [])]
+    print('firstweek_day=', semester_info['firstweek_day'])
+    print('first_day=', semester_info['first_day'])
+    print('lastweek_day=', semester_info['lastweek_day'])
+    print('last_day=', semester_info['last_day'])
