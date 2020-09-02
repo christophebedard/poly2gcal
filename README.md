@@ -31,8 +31,8 @@ $ pip3 install -r requirements.txt
 
 In general:
 
-* date format is YYYY-MM-DD
-* time format 1234 (e.g. 0830 for 8:30 AM)
+* date format is `YYYY-MM-DD`
+* time format is `0123` (e.g. `0830` for 8:30 AM)
 * exam period is not considered as being part of the semester when it comes to classes/lectures/labs
 
 Format description for `input_data.json`:
